@@ -1,0 +1,16 @@
+package shelfStorage;
+
+import javax.swing.JFrame;
+
+import shelfStorageFrame.MainFrame;
+
+public class ShelfStorage {
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		MainFrame mainFrame = new MainFrame(DepName.getDepName());
+		mainFrame.setTitle("Система хранения товара");
+		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mainFrame.setVisible(true);
+	}
+}

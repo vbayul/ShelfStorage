@@ -1,0 +1,17 @@
+package shelfStorage;
+
+import java.net.InetAddress;
+
+public class DepName {
+
+	private int depName;
+	
+	public int getDepName() {
+		return depName;
+	}
+
+	public void setDepName(int depName) {
+		this.depName = 	depName = Integer.parseInt(InetAddress.getLocalHost().getHostName().substring(3, 6));
+	}
+	
+}

@@ -1,0 +1,42 @@
+package shelfStorageFrame;
+
+public class PutGetDoc {
+	private String barcode;
+	private String articul;
+	private String count;
+	private String grow;
+	private String row;
+	private String columns;
+	private boolean add;
+	private int idEmp;
+	private int idArt;
+	
+	public PutGetDoc(String barcode, String articul, String count, String grow, String row, String columns, boolean add) {
+		this.barcode = barcode;
+		this.articul = articul;
+		this.count = count;
+		this.grow = grow;
+		this.row = row;
+		this.columns = columns;
+		this.add = add;
+	}
+	
+	public String getCount() {
+		return count;
+	}
+
+	public int getIdEmp() {
+		// через доступ к базе, написать вывод id
+		
+		return idEmp;
+	}
+
+	public int getIdArt() {
+		// через доступ к базе, написать вывод id
+		return idArt;
+	}
+	
+	public boolean getAdd() {
+		return add;
+	}	
+}

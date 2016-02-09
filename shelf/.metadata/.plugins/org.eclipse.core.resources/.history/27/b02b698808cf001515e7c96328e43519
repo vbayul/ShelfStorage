@@ -1,0 +1,131 @@
+package shelfStorageFrame;
+
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+
+import db.TableFill;
+
+public class MainFrame extends JFrame {
+
+
+	private static final long serialVersionUID = 1L;
+	PutGetFrame putGetFrame;
+	JTable mainTable;
+	String[] columnNames = new String[7];
+	String sql;
+	
+	public MainFrame(int depName)
+	{
+		columnNames[0] = "Отделы";
+		columnNames[1] = "Пролет";
+		columnNames[2] = "Ряд";
+		columnNames[3] = "Колонка";
+		columnNames[4] = "Артикул";
+		columnNames[5] = "Название";
+		columnNames[6] = "Количество";
+				
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		
+		// Mainpulation panel
+		JPanel manPanel = new JPanel(); 
+		JButton putButton = new JButton("Положить");
+		
+		putButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				putGetFrame = new PutGetFrame(1);
+				putGetFrame.setVisible(true);
+			}
+		});
+		
+		JButton getButton = new JButton("Взять");
+		
+		getButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				putGetFrame = new PutGetFrame(0);
+				putGetFrame.setVisible(true);
+			}
+		});
+		
+		JButton historyButton = new JButton("История");
+		historyButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		manPanel.add(putButton);
+		manPanel.add(getButton);
+		manPanel.add(historyButton);
+		add(manPanel, BorderLayout.NORTH);
+		
+		// Main table
+		mainTable = new JTable();
+		add( new JScrollPane(mainTable), BorderLayout.CENTER);
+		
+		// Find panel
+		JPanel findPanel = new JPanel();
+		JLabel findLabel = new JLabel("Ввведите артикул для поиска - ");
+		final JTextField findText = new JTextField(13);
+		JButton findButton = new JButton("Поиск");
+		JButton findClear = new JButton("Очистить");
+		
+		ActionListener findAction = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (!findText.getText().equals(""))
+				{	
+					// TODO вывести результат поиска
+
+					sql = "SELECT [dep],[global_rows],[rows],[columns],[article],[name],[count] "
+							+ "FROM storageView "
+							+ " WHERE article = " + findText.getText();
+					mainTable.setModel(TableFill.tableModel(sql, columnNames));
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Артикул указан неверно. Введите артикул.");
+				}
+			}
+		};
+		
+		ActionListener cleanAction = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				findText.setText("");
+				mainTable.setModel(null);
+			}
+		};
+		
+		findButton.addActionListener(findAction);
+		findClear.addActionListener(cleanAction);
+		
+		findPanel.add(findLabel);
+		findPanel.add(findText);
+		findPanel.add(findButton);
+		findPanel.add(findClear);
+		
+		add(findPanel, BorderLayout.SOUTH);
+						
+	}
+}

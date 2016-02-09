@@ -1,0 +1,232 @@
+package shelfStorageFrame;
+
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
+import db.TableFill;
+
+public class PutGetFrame extends JFrame {
+	private static final long serialVersionUID = 1L;
+	JTextField emplBarcode;
+	JTextField article; 
+	JTextField count;
+	JTextField grow;
+	JTextField row;
+	JTextField columns;
+	PutGetDoc doc1;
+	String errorMessage;
+	JTable shelfsTable;
+	String[] columnNames = new String[4];
+	private int mv;
+	
+	public PutGetFrame(int move) 
+	{
+		this.mv = move;
+		//setLocationRelativeTo(null); посредини экрана
+		// TODO допсиать момент закрытия окна и установки фалс
+		JPanel mainPanel = new JPanel();
+		emplBarcode = new JTextField(13);
+		article = new JTextField(13);
+		count = new JTextField(13);
+		mainPanel.setLayout(new GridLayout(3, 2));
+				
+		mainPanel.add(new JLabel("Сотрудник", SwingConstants.CENTER));
+		mainPanel.add(emplBarcode);
+		mainPanel.add(new JLabel("Артикул", SwingConstants.CENTER));
+		mainPanel.add(article);
+		mainPanel.add(new JLabel("Количество", SwingConstants.CENTER));		
+		mainPanel.add(count);
+		add(mainPanel, BorderLayout.NORTH);
+		
+		// центральная часть окна
+		JPanel tablePanel = new JPanel();
+		GridBagConstraints GBC = new GridBagConstraints();
+
+		tablePanel.setLayout(new GridBagLayout());
+		
+		JButton search = new JButton("Поиск");
+		search.addActionListener(new ActionListener() {
+			 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if (mv)
+				{
+					String sql = "SELECT [dep]"
+						+ " ,[global_rows]"
+						+ " ,[rows]"
+						+ " ,[columns]"
+						+ " ,[id] "
+						+ " FROM [medved].[dbo].[shelfs]"
+						+ " WHERE [dep] = " + DepName.getDepName();
+					columnNames[0] = "Отдел";
+					columnNames[1] = "Пролет";
+					columnNames[2] = "Ряд";
+					columnNames[3] = "Колонка";
+					shelfsTable.setModel(TableFill.tableModel(sql, columnNames));
+				}
+				else
+				{
+					String sql = "SELECT [dep]"
+							+ " ,[global_rows]"
+							+ " ,[rows]"
+							+ " ,[columns]"
+							+ " ,[id] "
+							+ " FROM [medved].[dbo].[storageView]"
+							+ " WHERE [dep] = " + DepName.getDepName() + " and barcode = " + article.getText();
+						columnNames[0] = "Отдел";
+						columnNames[1] = "Пролет";
+						columnNames[2] = "Ряд";
+						columnNames[3] = "Колонка";
+						shelfsTable.setModel(TableFill.tableModel(sql, columnNames));
+				}
+			}
+		});
+		
+		shelfsTable = new JTable() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+            public boolean isCellEditable(int arg0, int arg1) {
+                return false;
+            }
+        };
+        shelfsTable.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				grow.setText(shelfsTable.getModel().getValueAt(shelfsTable.getSelectedRow(), 1).toString());
+				row.setText(shelfsTable.getModel().getValueAt(shelfsTable.getSelectedRow(), 2).toString());
+				columns.setText(shelfsTable.getModel().getValueAt(shelfsTable.getSelectedRow(), 3).toString());
+			}
+		});
+        
+		grow = new JTextField();
+		row = new JTextField();
+		columns = new JTextField();
+		grow.setEditable(false);
+		row.setEditable(false);
+		columns.setEditable(false);
+
+		// поля выбранной полки 
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.weightx = 0.5;
+		GBC.gridx = 0;
+		GBC.gridy = 0;		
+		tablePanel.add(grow, GBC);
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.weightx = 0.5;
+		GBC.gridx = 1;
+		GBC.gridy = 0;	
+		tablePanel.add(row, GBC);
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.weightx = 0.5;
+		GBC.gridx = 2;
+		GBC.gridy = 0;
+		tablePanel.add(columns, GBC);
+		// кнопка поиска нужной полки
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.gridwidth = 3;
+		GBC.gridx = 0;
+		GBC.gridy = 1;
+		tablePanel.add(search, GBC);
+		// таблица для выбора полки
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.gridwidth = 3;
+		GBC.gridx = 0;
+		GBC.gridy = 2;
+		tablePanel.add(new JScrollPane(shelfsTable), GBC);
+		add(tablePanel);
+		
+		// нижняя часть окна кнопки сохранения и отмены 
+		JPanel buttonPanel = new JPanel();
+		JButton okButton = new JButton("Ок");
+		okButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				errorMessage = "";				
+				// проверка всех введных значений
+				if (!PutGetDocVer.empVer(emplBarcode.getText())) errorMessage += " Сотрудник ненайден.";
+				if (!PutGetDocVer.articleVer(article.getText())) errorMessage += " Артикул указан неверно.";
+				if (count.getText().equals(""))  errorMessage += " Количество указано неверно."; 						
+				if (!PutGetDocVer.shelfVer(grow.getText(), row.getText(), columns.getText())) errorMessage += " Полка не выбрана.";
+				// провка на дилинну строки ошибок, если она пустая, то создаем обект док1 и передаем обработчику для внесения в бд
+				if (errorMessage.length() == 0)
+				{
+					doc1 = new PutGetDoc(emplBarcode.getText(), article.getText(), count.getText(), 
+							grow.getText(), row.getText(), columns.getText(), mv);
+					//PutGet.PG(doc1);
+					
+					JOptionPane.showMessageDialog(null, "Товар добавлен.");
+					doc1 = null;
+					setVisible(false);					
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, errorMessage);
+				}				
+				doc1 = null;
+			}
+		});
+		
+		JButton cancelButton = new JButton("Отмена");
+		cancelButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				doc1 = null;
+				setVisible(false);			
+			}
+		});
+		
+		buttonPanel.add(okButton);
+		buttonPanel.add(cancelButton);
+	
+		add(buttonPanel, BorderLayout.SOUTH);
+		pack();
+	}
+}

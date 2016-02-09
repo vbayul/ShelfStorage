@@ -1,0 +1,19 @@
+package shelfStorage;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+public class DepName {
+
+	private static int depName;
+	
+	public static int getDepName() {
+		return depName;
+	}
+	
+	// geting name of dep from 
+	public static void setDepName() throws NumberFormatException, UnknownHostException {
+		this.depName = Integer.parseInt(InetAddress.getLocalHost().getHostName().substring(3, 6));
+	}
+	
+}

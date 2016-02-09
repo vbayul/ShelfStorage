@@ -1,0 +1,30 @@
+package shelfStorageFrame;
+
+public class PutGet {
+
+	private static PutGetDoc doc2;
+
+	public static void PG(PutGetDoc doc1)
+	{
+		// реализовать функцию сохранения документа в склад
+		doc2 = doc1;
+		
+		if (doc2.getAdd())
+		{
+			// добавляем товар 
+			
+			doc2.getIdEmp();
+			doc2.getIdArt();
+			doc2.getCount();
+			doc2.getAdd();
+		}
+		else
+		{
+			// убираем товар с полки
+			doc2.getIdEmp();
+			doc2.getIdArt();
+			doc2.getCount();
+			doc2.getAdd(); 
+		}
+	}
+}

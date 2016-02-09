@@ -1,0 +1,54 @@
+package shelfStorageFrame;
+
+import db.StorageFill;
+
+public class PutGetDocVer {
+
+
+	public static boolean empVer(String emp)
+	{
+		boolean ret = false;
+		// проверка изначально идет по количеству цифр, затем проверяется наличия такого штрихкода в базе
+		if (emp.length() == 13) 
+		{
+			String sql = "EXEC	[dbo].[empVer]"
+				+ "	@input_emp_barcode =  " + emp;
+			int a = StorageFill.exist(sql);
+			if (a != 0) ret = true;
+			else ret = false;
+		}
+		return ret;
+	}
+		
+	public static boolean articleVer(String art)
+	{
+		boolean ret = false;
+		// проверяетс сначала правильность количесвтва цифр в артикуле а потом наличие такого артикула в базе
+		if (art.length() == 8) 
+		{
+			String sql = "EXEC [dbo].[articleVer]"
+				+ "	@input_article_barcode =  " + art;
+			int a = StorageFill.exist(sql);
+			if (a != 0) ret = true;
+			else ret = false;
+		}
+		return ret;
+	}
+		
+	public static boolean shelfVer(String grow, String row, String columns)
+	{
+		// проверяется наличие такой полки в базе
+		boolean ret = false;
+		if (!grow.equals("")&!row.equals("")&!columns.equals(""))
+		{
+			String sql = "EXEC [dbo].[shelfVer]"
+					+ " @input_grow = "+ grow +","
+					+ "	@input_row = "+row +","
+					+ "	@input_column = "+columns;
+			int a = StorageFill.exist(sql);
+			if (a != 0) ret = true;
+			else ret = false;
+		}
+		return ret;
+	}
+}

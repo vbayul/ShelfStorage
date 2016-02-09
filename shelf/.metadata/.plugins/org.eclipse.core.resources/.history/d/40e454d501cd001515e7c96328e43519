@@ -1,0 +1,11 @@
+package shelfStorage;
+
+public class ShelfStorage {
+	
+
+	public static void main(String[] args) throws UnknownHostException {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

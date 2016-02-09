@@ -1,0 +1,51 @@
+package db;
+
+import java.sql.*;
+import javax.swing.table.DefaultTableModel;
+
+public class StorageFill {
+	
+	public static int[] exist(String sql)
+	{
+
+		Connection con = null;
+		String table = sql;
+		int p = null;
+		
+		DefaultTableModel model = new DefaultTableModel();
+		try
+		{
+
+			con = GetConnetion.getConnection();
+			
+			try
+			{
+				Statement st = con.createStatement();
+				ResultSet rs = st.executeQuery(table);
+
+			    while (rs.next()) 
+				{
+			    	p = new int[1];
+			    	for (int i = 0; i < 1; i++)
+			    	{
+			    		p = rs.getInt(i+1);			    	
+			    	}
+		        }
+			}
+			catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				con.close();
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return p;
+	}
+}

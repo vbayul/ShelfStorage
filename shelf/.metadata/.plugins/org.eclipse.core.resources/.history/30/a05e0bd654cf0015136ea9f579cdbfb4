@@ -1,0 +1,222 @@
+package shelfStorageFrame;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import db.TableFill;
+import shelfStorage.DepName;
+import shelfStorage.PutGet;
+import shelfStorage.PutGetDoc;
+import shelfStorage.PutGetDocVer;
+
+public class PutGetFrame extends JFrame {
+	private static final long serialVersionUID = 1L;
+	JTextField emplBarcode;
+	JTextField article; 
+	JTextField count;
+	JTextField grow;
+	JTextField row;
+	JTextField columns;
+	PutGetDoc doc1;
+	String errorMessage;
+	JTable shelfsTable;
+	String[] columnNames = new String[4];
+	private int mv;
+	
+	public PutGetFrame(int move) 
+	{
+		this.mv = move;
+		JPanel mainPanel = new JPanel();
+		emplBarcode = new JTextField(13);
+		article = new JTextField(13);
+		count = new JTextField(13);
+
+
+		JPanel buttonPanel = new JPanel();
+		JButton search = new JButton("Поиск");
+		JButton okButton = new JButton("Ок");
+		JButton cancelButton = new JButton("Отмена");
+		grow = new JTextField();
+		row = new JTextField();
+		columns = new JTextField();
+		grow.setEditable(false);
+		row.setEditable(false);
+		columns.setEditable(false);	
+		JPanel tablePanel = new JPanel();
+		GridBagConstraints GBC = new GridBagConstraints();
+		tablePanel.setLayout(new GridBagLayout());
+		shelfsTable = new JTable() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+            public boolean isCellEditable(int arg0, int arg1) {
+                return false;
+            }
+        };
+		
+		search.addActionListener(new ActionListener() {
+			 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if (mv==1)
+				{
+					String sql = "SELECT [dep]"
+						+ " ,[global_rows]"
+						+ " ,[rows]"
+						+ " ,[columns]"
+						+ " ,[id] "
+						+ " FROM [medved].[dbo].[shelfs]"
+						+ " WHERE [dep] = " + DepName.getDepName();
+					columnNames[0] = "Отдел";
+					columnNames[1] = "Пролет";
+					columnNames[2] = "Ряд";
+					columnNames[3] = "Колонка";
+					shelfsTable.setModel(TableFill.tableModel(sql, columnNames));
+				}
+				else
+				{
+					String sql = "SELECT [dep]"
+							+ " ,[global_rows]"
+							+ " ,[rows]"
+							+ " ,[columns]"
+							+ " FROM [medved].[dbo].[storageView]"
+							+ " WHERE [dep] = " + DepName.getDepName() + " and [article] = " + article.getText();
+						columnNames[0] = "Отдел";
+						columnNames[1] = "Пролет";
+						columnNames[2] = "Ряд";
+						columnNames[3] = "Колонка";
+						shelfsTable.setModel(TableFill.tableModel(sql, columnNames));
+				}
+			}
+		});		
+
+        shelfsTable.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				grow.setText(shelfsTable.getModel().getValueAt(shelfsTable.getSelectedRow(), 1).toString());
+				row.setText(shelfsTable.getModel().getValueAt(shelfsTable.getSelectedRow(), 2).toString());
+				columns.setText(shelfsTable.getModel().getValueAt(shelfsTable.getSelectedRow(), 3).toString());
+			}
+		});
+
+        okButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				errorMessage = "";				
+				// проверка всех введных значений
+				if (!PutGetDocVer.empVer(emplBarcode.getText())) errorMessage += " Сотрудник ненайден.";
+				if (!PutGetDocVer.articleVer(article.getText())) errorMessage += " Артикул указан неверно.";
+				if (!PutGetDocVer.countVer(article.getText(),count.getText(), mv)) errorMessage += " Количество указан неверно.";
+				if (!PutGetDocVer.shelfVer(grow.getText(), row.getText(), columns.getText())) errorMessage += " Полка не выбрана.";
+				// провка на дилинну строки ошибок, если она пустая, то создаем обект док1 и передаем обработчику для внесения в бд
+				if (errorMessage.length() == 0)
+				{
+					doc1 = new PutGetDoc(emplBarcode.getText(), article.getText(), count.getText(), 
+							grow.getText(), row.getText(), columns.getText(), mv);
+					PutGet.PG(doc1);
+					if (mv == 1)
+					{
+						JOptionPane.showMessageDialog(null, "Товар добавлен.");
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Товар удален.");
+					}
+					doc1 = null;
+					setVisible(false);					
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, errorMessage);
+				}				
+				doc1 = null;
+			}
+		});
+		
+		
+		cancelButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				doc1 = null;
+				setVisible(false);			
+			}
+		});
+		
+		mainPanel.setLayout(new GridLayout(3, 2));
+		
+		mainPanel.add(new JLabel("Сотрудник", SwingConstants.CENTER));
+		mainPanel.add(emplBarcode);
+		mainPanel.add(new JLabel("Артикул", SwingConstants.CENTER));
+		mainPanel.add(article);
+		mainPanel.add(new JLabel("Количество", SwingConstants.CENTER));		
+		mainPanel.add(count);
+		buttonPanel.add(okButton);
+		buttonPanel.add(cancelButton);
+
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.weightx = 0.5;
+		GBC.gridx = 0;
+		GBC.gridy = 0;		
+		tablePanel.add(grow, GBC);
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.weightx = 0.5;
+		GBC.gridx = 1;
+		GBC.gridy = 0;	
+		tablePanel.add(row, GBC);
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.weightx = 0.5;
+		GBC.gridx = 2;
+		GBC.gridy = 0;
+		tablePanel.add(columns, GBC);
+		// кнопка поиска нужной полки
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.gridwidth = 3;
+		GBC.gridx = 0;
+		GBC.gridy = 1;
+		tablePanel.add(search, GBC);
+		// таблица для выбора полки
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.gridwidth = 3;
+		GBC.gridx = 0;
+		GBC.gridy = 2;
+		tablePanel.add(new JScrollPane(shelfsTable), GBC);
+		
+		// добавление результирующих 
+		add(tablePanel);
+		add(buttonPanel, BorderLayout.SOUTH);
+		add(mainPanel, BorderLayout.NORTH);
+		
+		pack();
+	}
+}

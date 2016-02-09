@@ -1,0 +1,22 @@
+package db;
+
+import java.sql.*;
+
+public class GetConnetion {
+	public static Connection getConnection() throws SQLException
+	{
+		String url = "jdbc:sqlserver://DT-SQL\\MSSQLSERVERDT;DatabaseName=medved";
+		String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+		String userName = "admin";
+		String password = "njgjkm";
+		try
+		{
+		Class.forName(driver).newInstance();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return DriverManager.getConnection(url, userName, password);
+	}
+}

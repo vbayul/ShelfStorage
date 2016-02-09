@@ -1,0 +1,58 @@
+package db;
+
+import java.sql.*;
+import javax.swing.table.DefaultTableModel;
+
+public class TableFill {
+	
+	public static DefaultTableModel tableModel(String sql, String[] cName)
+	{
+
+		Connection con = null;
+		String table = sql;
+		String[] columnName = cName;
+		
+		DefaultTableModel model = new DefaultTableModel();
+		model.setColumnIdentifiers(columnName);
+	
+		try
+		{
+			//создаем подключени
+			con = GetConnetion.getConnection();
+		
+			try
+			{
+				// создание утверждение
+				Statement st = con.createStatement();
+				// присвоение 
+				ResultSet rs = st.executeQuery(table);
+				/*перебор результатов из резульсета в модельтаблицы 
+				для дальнейшего закрепления jtable
+				*/
+			    while (rs.next()) 
+				{
+			    	String[] p = new String[columnName.length];
+			    	for (int i = 0; i < columnName.length; i++)
+			    	{
+			    		p[i] = rs.getString(i+1);			    	
+			    	}
+			    	model.addRow(p);
+		        }
+			}
+			catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				con.close();
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return model;
+	}
+}

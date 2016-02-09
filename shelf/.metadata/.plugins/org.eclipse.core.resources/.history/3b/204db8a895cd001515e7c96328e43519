@@ -1,0 +1,11 @@
+package shelfStorage;
+
+public class PutGet {
+
+	private String barcode;
+	private int articul;
+	private int count;
+	private int grow;
+	private int row;
+	private int columns;
+}

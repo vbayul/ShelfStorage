@@ -1,0 +1,42 @@
+package shelfStorageFrame;
+
+import javax.swing.JOptionPane;
+
+import db.StorageFill;
+
+public class PutGetDocumentVer {
+
+
+	public static boolean empVer(String emp)
+	{
+		boolean rete = false;
+		if (emp.length() == 13) 
+		{
+			String sql = "EXEC	[dbo].[empeVer]"
+				+ "	@input_emp_barcode =  " + emp;
+			int a = StorageFill.exist(sql);
+			if (a != 0) rete = true;
+			else rete = false;
+		}
+		return ret;
+	}
+		
+	public static boolean articleVer(String art)
+	{
+		boolean reta = false;
+		if (art.length() == 8) 
+		{
+			String sql = "EXE [dbo].[articleVer]"
+				+ "	@input_article_barcode =  " + art;
+			int a = StorageFill.exist(sql);
+			if (a != 0) reta = true;
+			else reta = false;
+		}
+		return reta;
+	}
+		
+	public static boolean shelfVer(String grow, String row, String column)
+	{
+		return false;
+	}
+}

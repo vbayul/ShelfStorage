@@ -1,0 +1,91 @@
+package shelfStorageFrame;
+
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+
+import com.toedter.calendar.JDateChooser;
+
+public class HistoryFrame extends JFrame {
+	
+	JDateChooser cal1;
+	JDateChooser cal2;
+	JTextField article;
+	JTable mainTable;
+	
+	private static final long serialVersionUID = 1L;
+
+	public HistoryFrame()
+	{
+		JPanel settingPanel = new JPanel();
+		JButton searchButton = new JButton("Поиск");
+		cal1 = new JDateChooser();
+		cal2 = new JDateChooser();
+		article = new JTextField();
+		mainTable = new JTable();
+		JButton searchHistory = new JButton("Поиск"); 
+		settingPanel.setLayout( new GridBagLayout());
+		GridBagConstraints GBC = new GridBagConstraints();
+		
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.weightx = 0.5;
+		GBC.gridx = 0;
+		GBC.gridy = 0;
+		settingPanel.add(new JLabel("Период с "),GBC);
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.weightx = 0.5;
+		GBC.gridx = 1;
+		GBC.gridy = 0;
+		settingPanel.add(cal1,GBC);
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.weightx = 0.5;
+		GBC.gridx = 2;
+		GBC.gridy = 0;
+		settingPanel.add(new JLabel(" по "),GBC);	
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.weightx = 0.5;
+		GBC.gridx = 3;
+		GBC.gridy = 0;
+		settingPanel.add(cal2,GBC);
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.weightx = 0.5;
+		GBC.gridx = 0;
+		GBC.gridy = 1;
+		settingPanel.add(new JLabel("Артикул"), GBC);		
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.gridwidth = 3;
+		GBC.gridx = 1;
+		GBC.gridy = 1;
+		settingPanel.add(article, GBC);
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.gridwidth = 4;
+		GBC.gridx = 0;
+		GBC.gridy = 2;
+		settingPanel.add(searchHistory, GBC);		
+		
+		// действия кнопок
+		searchButton.addActionListener(new ActionListener() {
+		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				searchHistory
+			}
+		});
+		
+		add(new JScrollPane(mainTable), BorderLayout.CENTER);
+		add(settingPanel, BorderLayout.SOUTH);
+		pack();
+	}
+	
+}

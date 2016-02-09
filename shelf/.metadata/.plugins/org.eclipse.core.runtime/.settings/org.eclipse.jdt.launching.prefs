@@ -1,0 +1,3 @@
+eclipse.preferences.version=1
+org.eclipse.jdt.launching.PREF_DEFAULT_ENVIRONMENTS_XML=
+org.eclipse.jdt.launching.PREF_VM_XML=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<vmSettings defaultVM\="57,org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType13,1454861190767" defaultVMConnector\="">\r\n<vmType id\="org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType">\r\n<vm id\="1454782227867" name\="jre7" path\="C\:\\Program Files (x86)\\Java\\jre7"/>\r\n<vm id\="1454861190767" name\="jdk1.7.0_79" path\="C\:\\Program Files (x86)\\Java\\jdk1.7.0_79"/>\r\n<vm id\="1454861190768" name\="jre" path\="C\:\\Program Files (x86)\\JetBrains\\IntelliJ IDEA 15.0.3\\jre"/>\r\n</vmType>\r\n</vmSettings>\r\n

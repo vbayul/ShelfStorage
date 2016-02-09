@@ -1,0 +1,14 @@
+package shelfStorage;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+public class ShelfStorage {
+
+	public static void main(String[] args) throws UnknownHostException {
+		// TODO Auto-generated method stub
+		String depName = InetAddress.getLocalHost().getHostName();
+		System.out.println(depName.substring(3, 6));
+	}
+
+}

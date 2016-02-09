@@ -1,0 +1,16 @@
+package shelfStorage;
+
+public class DepName {
+
+	private int dep;
+
+	public int getDep() {
+		return dep;
+	}
+
+	public void setDep(int dep) {
+		this.dep = dep;
+	}
+	
+	
+}

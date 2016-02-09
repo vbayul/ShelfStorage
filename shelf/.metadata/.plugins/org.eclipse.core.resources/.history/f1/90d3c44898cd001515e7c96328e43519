@@ -1,0 +1,11 @@
+package shelfStorage;
+
+public static class PutGet {
+	
+	PutGetDocument doc2;
+
+	public PutGet(PutGetDocument doc1)
+	{
+		doc2 = doc1;
+	}
+}

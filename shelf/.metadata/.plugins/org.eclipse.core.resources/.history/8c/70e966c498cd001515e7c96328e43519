@@ -1,0 +1,21 @@
+package shelfStorage;
+
+public class PutGetDocument {
+	private String barcode;
+	private String articul;
+	private String count;
+	private String grow;
+	private String row;
+	private String columns;
+	private int idEmp;
+	private int id;
+	
+	public PutGetDocument(String barcode, String articul, String count, String grow, String row, String columns) {
+		this.barcode = barcode;
+		this.articul = articul;
+		this.count = count;
+		this.grow = grow;
+		this.row = row;
+		this.columns = columns;
+	}
+}

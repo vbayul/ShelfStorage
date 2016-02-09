@@ -1,0 +1,48 @@
+package shelfDB;
+
+import java.sql.*;
+
+public class StorageFill {
+	
+	public static int exist(String sql)
+	{
+
+		Connection con = null;
+		String table = sql;
+		int p = 0 ;
+		
+		try
+		{
+
+			con = GetConnetion.getConnection();
+			
+			try
+			{
+				Statement st = con.createStatement();
+				ResultSet rs = st.executeQuery(table);
+
+			    while (rs.next()) 
+				{
+			    	for (int i = 0; i < 1; i++)
+			    	{
+			    		p = rs.getInt(i+1);			    	
+			    	}
+		        }
+			}
+			catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				con.close();
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return p;
+	}
+}

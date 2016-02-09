@@ -1,0 +1,13 @@
+package shelfStorage;
+
+public class PutGet {
+
+	static PutGetDocument doc2;
+
+	public static void PG(PutGetDocument doc1)
+	{
+		doc2 = doc1;
+		
+		doc2.getIdArt();
+	}
+}

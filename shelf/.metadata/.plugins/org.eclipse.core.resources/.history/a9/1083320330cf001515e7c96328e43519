@@ -1,0 +1,120 @@
+package shelfStorageFrame;
+
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+
+import com.toedter.calendar.JDateChooser;
+
+import db.TableFill;
+
+public class HistoryFrame extends JFrame {
+	
+	JDateChooser cal1;
+	JDateChooser cal2;
+	JTextField article;
+	JTable historyTable;
+	String[] columnNames = new String[11];
+	
+	private static final long serialVersionUID = 1L;
+
+	public HistoryFrame()
+	{
+		// реализаци копонентов
+		cal1 = new JDateChooser();
+		cal2 = new JDateChooser();
+		article = new JTextField();
+		historyTable = new JTable();
+		JButton searchHistory = new JButton("Поиск");
+		JPanel settingPanel = new JPanel();
+		settingPanel.setLayout( new GridBagLayout());
+		GridBagConstraints GBC = new GridBagConstraints();
+		
+		// размещение на форме
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.weightx = 0.5;
+		GBC.gridx = 0;
+		GBC.gridy = 0;
+		settingPanel.add(new JLabel("Период с "),GBC);
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.weightx = 0.5;
+		GBC.gridx = 1;
+		GBC.gridy = 0;
+		settingPanel.add(cal1,GBC);
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.weightx = 0.5;
+		GBC.gridx = 2;
+		GBC.gridy = 0;
+		settingPanel.add(new JLabel(" по "),GBC);	
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.weightx = 0.5;
+		GBC.gridx = 3;
+		GBC.gridy = 0;
+		settingPanel.add(cal2,GBC);
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.weightx = 0.5;
+		GBC.gridx = 0;
+		GBC.gridy = 1;
+		settingPanel.add(new JLabel("Артикул"), GBC);		
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.gridwidth = 3;
+		GBC.gridx = 1;
+		GBC.gridy = 1;
+		settingPanel.add(article, GBC);
+		GBC.fill = GridBagConstraints.HORIZONTAL;
+		GBC.gridwidth = 4;
+		GBC.gridx = 0;
+		GBC.gridy = 2;
+		settingPanel.add(searchHistory, GBC);		
+		
+		// действия кнопок
+		searchHistory.addActionListener(new ActionListener() {
+		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				String sql = "SELECT [dep]"
+						+ " ,[add]"
+						+ " ,[date]"
+						+ " ,[time]"
+						+ " ,[article]"
+						+ " ,[name]"
+						+ " ,[count]"
+						+ " ,[global_rows]"
+						+ " ,[rows]"
+						+ " ,[columns]"
+						+ " ,[name_ru]"
+						+ "  FROM [medved].[dbo].[docsView]";
+				columnNames[0] = "Отдел";
+				columnNames[1] = "Движение";
+				columnNames[2] = "Дата";
+				columnNames[3] = "Время";
+				columnNames[4] = "Артикул";
+				columnNames[5] = "Название";
+				columnNames[6] = "Количество";
+				columnNames[7] = "Пролет";
+				columnNames[8] = "Ряд";
+				columnNames[9] = "Колонка";
+				columnNames[10] = "ФИО";		
+				historyTable.setModel(TableFill.tableModel(sql, columnNames));
+
+			}
+		});
+		add(settingPanel, BorderLayout.NORTH);		
+		add(new JScrollPane(historyTable), BorderLayout.CENTER);
+
+		pack();
+	}
+	
+}

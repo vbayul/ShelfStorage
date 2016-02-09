@@ -1,0 +1,20 @@
+package shelfStorage;
+
+public class PutGet {
+
+	private String barcode;
+	private int articul;
+	private int count;
+	private int grow;
+	private int row;
+	private int columns;
+	
+	public PutGet(String barcode, int articul, int count, int grow, int row, int columns) {
+		this.barcode = barcode;
+		this.articul = articul;
+		this.count = count;
+		this.grow = grow;
+		this.row = row;
+		this.columns = columns;
+	}
+}
